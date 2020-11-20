@@ -99,6 +99,7 @@ export default function App() {
           touched,
           errors,
           handleChange,
+          handleBlur,
           handleSubmit,
           dirty,
           isValid,
@@ -119,6 +120,7 @@ export default function App() {
                   variant="outlined"
                   label="Full name"
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   error={errors.fullName && touched.fullName}
                   helperText={
                     errors.fullName && touched.fullName ? errors.fullName : ""
@@ -130,6 +132,7 @@ export default function App() {
                   variant="outlined"
                   label="E-mail"
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   error={errors.email && touched.email}
                   helperText={errors.email && touched.email ? errors.email : ""}
                 />
@@ -153,6 +156,7 @@ export default function App() {
                   }}
                   type={showPassword ? "text" : "password"}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   error={errors.password && touched.password}
                   helperText={
                     errors.password && touched.password ? errors.password : ""
@@ -169,6 +173,7 @@ export default function App() {
                     )
                   }}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   error={errors.phoneNumber && touched.phoneNumber}
                   helperText={
                     errors.phoneNumber && touched.phoneNumber
@@ -184,6 +189,7 @@ export default function App() {
                     name="gender"
                     value={values.gender}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   >
                     {[
                       { value: "female", label: "Female" },
@@ -268,6 +274,7 @@ export default function App() {
                     const numValue = parseFloat(value.replace(/,/g, ""));
                     setFieldValue("salary", isNaN(numValue) ? "" : numValue);
                   }}
+                  onBlur={handleBlur}
                   error={errors.salary && touched.salary}
                   helperText={
                     errors.salary && touched.salary ? errors.salary : ""
