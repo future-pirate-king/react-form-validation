@@ -80,6 +80,10 @@ export default function App() {
     console.log(values);
   };
 
+  const formatNumber = (num) => {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  };
+
   return (
     <Box p={1} maxWidth="900px" margin="0 auto">
       <Box>
@@ -90,7 +94,16 @@ export default function App() {
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-        {({ values, touched, errors, handleChange, handleSubmit }) => {
+        {({
+          values,
+          touched,
+          errors,
+          handleChange,
+          handleSubmit,
+          dirty,
+          isValid,
+          setFieldValue
+        }) => {
           return (
             <Form onSubmit={handleSubmit}>
               <Box
@@ -170,6 +183,7 @@ export default function App() {
                     aria-label="gender"
                     name="gender"
                     value={values.gender}
+                    onChange={handleChange}
                   >
                     {[
                       { value: "female", label: "Female" },
@@ -241,7 +255,7 @@ export default function App() {
                 </FormControl>
                 <StyledTextField
                   name="salary"
-                  value={values.salary}
+                  value={formatNumber(values.salary)}
                   variant="outlined"
                   label="Annual Salary"
                   InputProps={{
@@ -249,13 +263,21 @@ export default function App() {
                       <InputAdornment position="start">Rs</InputAdornment>
                     )
                   }}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const value = e.target.value || "";
+                    const numValue = parseFloat(value.replace(/,/g, ""));
+                    setFieldValue("salary", isNaN(numValue) ? "" : numValue);
+                  }}
                   error={errors.salary && touched.salary}
                   helperText={
                     errors.salary && touched.salary ? errors.salary : ""
                   }
                 />
-                <StyledButton type="submit" endIcon={<ArrowIcon />}>
+                <StyledButton
+                  type="submit"
+                  endIcon={<ArrowIcon />}
+                  disabled={!(dirty && isValid)}
+                >
                   Submit
                 </StyledButton>
               </Box>
@@ -359,5 +381,8 @@ const StyledButton = withStyles((theme) => ({
     padding: "0 30px",
     boxShadow:
       "0px 6px 6px -3px rgba(189, 189, 189, 0.3), 0px 10px 14px 1px rgba(189, 189, 189, 0.24), 0px 4px 18px 3px rgba(189, 189, 189, 0.20)"
+  },
+  disabled: {
+    background: theme.palette.background.default
   }
 }))((props) => <Button {...props} />);
