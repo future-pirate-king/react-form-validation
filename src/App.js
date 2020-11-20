@@ -172,6 +172,7 @@ export default function App() {
                       <InputAdornment position="start">+91</InputAdornment>
                     )
                   }}
+                  type="number"
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors.phoneNumber && touched.phoneNumber}
